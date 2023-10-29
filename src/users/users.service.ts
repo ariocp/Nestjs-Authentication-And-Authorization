@@ -7,8 +7,8 @@ import { CreateUserDto } from './dto/create-user.dto';
 @Injectable()
 export class UsersService {
   constructor(
-      @InjectRepository(UserEntity)
-      private repository: Repository<UserEntity>,
+    @InjectRepository(UserEntity)
+    private repository: Repository<UserEntity>,
   ) {}
 
   async findByEmail(email: string) {

